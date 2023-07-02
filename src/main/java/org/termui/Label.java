@@ -1,6 +1,7 @@
 package org.termui;
 
 import org.termui.border.BorderStyle;
+import org.termui.style.CompoundStyle;
 
 public class Label extends Component {
     private String text;
@@ -29,12 +30,16 @@ public class Label extends Component {
     }
 
     @Override
-    protected void drawComponent(char[][] buffer, int startX, int startY, int contentWidth, int contentHeight) {
+    protected void drawComponent(char[][] buffer, CompoundStyle[][] styleBuffer, int startX, int startY, int contentWidth, int contentHeight) {
         // Draw the label text
         int currentX = startX;
         int currentY = startY;
+        // style
+        CompoundStyle style = getCompoundStyle();
+
         for (char c : text.toCharArray()) {
             buffer[currentY][currentX] = c;
+            styleBuffer[currentY][currentX] = style;
             currentX++;
             if (currentX >= startX + contentWidth) {
                 currentX = startX;

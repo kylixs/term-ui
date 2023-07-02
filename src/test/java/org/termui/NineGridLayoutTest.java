@@ -1,59 +1,53 @@
 package org.termui;
 
+import org.termui.border.BorderStyle;
+import org.termui.layout.AdaptiveLayout;
+import org.termui.layout.ConstraintType;
 import org.termui.layout.HorizontalAlignment;
 import org.termui.layout.NineGridLayoutManager;
 import org.termui.layout.Position;
 import org.termui.layout.VerticalAlignment;
 import org.termui.layout.VerticalLayout;
+import org.termui.style.Color;
 
 public class NineGridLayoutTest {
-    private char[][] mainBuffer;
-    private Panel rootPanel;
-
-    public NineGridLayoutTest(int width, int height) {
-        mainBuffer = new char[height][width];
-        rootPanel = new Panel(0, 0, width, height);
-    }
-
-    public void setRootContainer(Panel panel) {
-        rootPanel = panel;
-    }
-
-    public void draw() {
-        for (char[] row : mainBuffer) {
-            for (int i = 0; i < row.length; i++) {
-                row[i] = ' ';
-            }
-        }
-
-        rootPanel.draw(mainBuffer);
-
-        for (char[] row : mainBuffer) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
 
     public static void main(String[] args) {
-        NineGridLayoutTest characterInterface = new NineGridLayoutTest(80, 24);
+        Window window = new Window(80, 24);
 
         Panel panel = new Panel(10, 5, 60, 13);
         panel.setLayoutManager(new NineGridLayoutManager(panel));
 
-        Label leftTopLabel = new Label("LEFT_TOP");
-        Label topLabel = new Label("TOP");
-        Label rightTopLabel = new Label("RIGHT_TOP");
-        Label leftLabel = new Label("LEFT");
-        Label centerLabel = new Label("CENTER");
-        Label rightLabel = new Label("RIGHT");
-        Label leftBottomLabel = new Label("LEFT_BOTTOM");
-        Label bottomLabel = new Label("BOTTOM");
-        Label rightBottomLabel = new Label("RIGHT_BOTTOM");
+        Label leftTopLabel = new Label("LEFT_TOP")
+                .withBorder(BorderStyle.SINGLE_LINE)
+                .withBackgroundColor(Color.BLUE);
+        Label topLabel = new Label("TOP")
+                .withBorder(BorderStyle.SINGLE_LINE)
+                .withBackgroundColor(Color.RED);
+        Label rightTopLabel = new Label("RIGHT_TOP").withBorder(BorderStyle.SINGLE_LINE);
+        Label leftLabel = new Label("LEFT").withBorder(BorderStyle.SINGLE_LINE);
+        Label centerLabel = new Label("CENTER")
+                .withBorder(BorderStyle.SINGLE_LINE)
+                .withForegroundColor(Color.MAGENTA)
+                .withHorizontalAlignment(HorizontalAlignment.CENTER)
+                .withVerticalAlignment(VerticalAlignment.MIDDLE);
+        Label rightLabel = new Label("RIGHT").withBorder(BorderStyle.SINGLE_LINE);
+        Label leftBottomLabel = new Label("LEFT_BOTTOM").withBorder(BorderStyle.SINGLE_LINE);
+        Label bottomLabel = new Label("BOTTOM").withBorder(BorderStyle.SINGLE_LINE);
+        Label rightBottomLabel = new Label("RIGHT_BOTTOM").withBorder(BorderStyle.SINGLE_LINE);
+
+        Panel centerPanel = new Panel(0, 0, 10, 10)
+                .withBorder(BorderStyle.SINGLE_LINE)
+                .withBackgroundColor(Color.GREEN);
+        // Compound AdaptiveLayout here
+        AdaptiveLayout centerLayout = new AdaptiveLayout(false);
+        centerPanel.setLayoutManager(centerLayout);
+        centerPanel.addComponent(centerLabel);
+        centerLayout.setConstraint(0, ConstraintType.FILL);
 
         topLabel.setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
-        centerLabel.setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
+        //centerLabel.setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
+        centerPanel.setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
         bottomLabel.setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
 
         leftLabel.setAlignment(HorizontalAlignment.LEFT, VerticalAlignment.MIDDLE);
@@ -67,19 +61,18 @@ public class NineGridLayoutTest {
         layoutManager.addComponent(topLabel, Position.TOP);
         layoutManager.addComponent(rightTopLabel, Position.RIGHT_TOP);
         layoutManager.addComponent(leftLabel, Position.LEFT);
-        layoutManager.addComponent(centerLabel, Position.CENTER);
+        //layoutManager.addComponent(centerLabel, Position.CENTER);
+        layoutManager.addComponent(centerPanel, Position.CENTER);
         layoutManager.addComponent(rightLabel, Position.RIGHT);
         layoutManager.addComponent(leftBottomLabel, Position.LEFT_BOTTOM);
         layoutManager.addComponent(bottomLabel, Position.BOTTOM);
         layoutManager.addComponent(rightBottomLabel, Position.RIGHT_BOTTOM);
 
-        Panel rootPanel = new Panel(0, 0, 80, 24);
+        Panel rootPanel = window.getRootPanel();
         rootPanel.setLayoutManager(new VerticalLayout());
         rootPanel.addComponent(panel);
-
-        characterInterface.setRootContainer(rootPanel);
         rootPanel.doLayout();
 
-        characterInterface.draw();
+        window.draw();
     }
 }

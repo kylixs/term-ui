@@ -1,42 +1,10 @@
 package org.termui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class TableTest {
-    private char[][] mainBuffer;
-    private List<Component> components;
-
-    public TableTest(int width, int height) {
-        mainBuffer = new char[height][width];
-        components = new ArrayList<>();
-    }
-
-    public void addComponent(Component component) {
-        components.add(component);
-    }
-
-    public void draw() {
-        for (char[] row : mainBuffer) {
-            for (int i = 0; i < row.length; i++) {
-                row[i] = ' ';
-            }
-        }
-
-        for (Component component : components) {
-            component.draw(mainBuffer);
-        }
-
-        for (char[] row : mainBuffer) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
 
     public static void main(String[] args) {
-        TableTest characterInterface = new TableTest(80, 24);
+        Window window = new Window(80, 24);
+        Panel rootPanel = window.getRootPanel();
 
         Table table = new Table(10, 5, 3, 3);
         table.setColumnWidth(0, 15);
@@ -51,8 +19,8 @@ class TableTest {
         table.setData(2, 0, "Emily");
         table.setData(2, 1, "30");
         table.setData(2, 2, "London");
-        characterInterface.addComponent(table);
+        rootPanel.addComponent(table);
 
-        characterInterface.draw();
+        window.draw();
     }
 }

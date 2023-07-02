@@ -1,6 +1,7 @@
 package org.termui.style;
 
 public enum Color {
+    NONE(-1),
     BLACK(30),
     RED(31),
     GREEN(32),

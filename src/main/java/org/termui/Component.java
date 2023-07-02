@@ -4,6 +4,8 @@ import org.termui.border.BorderStyle;
 import org.termui.layout.HorizontalAlignment;
 import org.termui.layout.VerticalAlignment;
 import org.termui.style.Color;
+import org.termui.style.CompoundStyle;
+import org.termui.style.CompoundStyleFactory;
 import org.termui.style.Style;
 
 public class Component {
@@ -14,9 +16,9 @@ public class Component {
     protected boolean visible;
     protected VerticalAlignment verticalAlignment = VerticalAlignment.TOP;
     protected HorizontalAlignment horizontalAlignment = HorizontalAlignment.LEFT;
-    protected Style style = Style.RESET;
-    protected Color foregroundColor = Color.WHITE;
-    protected Color backgroundColor = Color.BLACK;
+    protected Style style = Style.NONE;
+    protected Color foregroundColor = Color.NONE;
+    protected Color backgroundColor = Color.NONE;
     protected BorderStyle borderStyle = BorderStyle.NONE;
     protected Color borderColor = Color.WHITE;
 
@@ -33,19 +35,24 @@ public class Component {
         this.horizontalAlignment = horizontalAlignment;
     }
 
-//    public void draw(char[][] buffer) {
-//        if (visible) {
-//            for (int i = 0; i < height; i++) {
-//                for (int j = 0; j < width; j++) {
-//                    if (x + j >= 0 && x + j < buffer[0].length && y + i >= 0 && y + i < buffer.length) {
-//                        buffer[y + i][x + j] = getCharAt(j, i);
-//                    }
-//                }
-//            }
-//        }
-//    }
+    protected void drawBackground(char[][] buffer, CompoundStyle[][] styleBuffer) {
+        CompoundStyle style = getCompoundStyle();
+        int startY = getY();
+        int startX = getX();
+        int contentHeight = getHeight();
+        int contentWidth = getWidth();
+        for (int y = startY; y < startY + contentHeight; y++) {
+            for (int x = startX; x < startX + contentWidth; x++) {
+                // avoid out of bounds of buffer
+                if (y < buffer.length && x < buffer[y].length) {
+                    buffer[y][x] = ' ';
+                    styleBuffer[y][x] = style;
+                }
+            }
+        }
+    }
 
-    public void draw(char[][] buffer) {
+    public void draw(char[][] buffer, CompoundStyle[][] styleBuffer) {
         int startX = x;
         int startY = y;
 
@@ -88,33 +95,21 @@ public class Component {
                 break;
         }
 
-        drawBackground(buffer);
-
         if (borderStyle != BorderStyle.NONE) {
             // Adjust the start position
             startX++;
 //            startY++;
             // Draw the border
-            drawBorder(buffer);
+            drawBorder(buffer, styleBuffer);
         }
 
         // Draw the component
-        drawComponent(buffer, startX, startY, actualWidth, actualHeight);
+        drawComponent(buffer, styleBuffer, startX, startY, actualWidth, actualHeight);
 
         System.out.println(String.format("Component: %s, bounds:(%d, %d, %d, %d), draw: (%d, %d)", this, x, y, getWidth(), getHeight(), startX, startY));
     }
 
-    protected void drawBackground(char[][] buffer) {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (x + j >= 0 && x + j < buffer[0].length && y + i >= 0 && y + i < buffer.length) {
-                    buffer[y + i][x + j] = ' ';
-                }
-            }
-        }
-    }
-
-    protected void drawComponent(char[][] buffer, int startX, int startY, int contentWidth, int contentHeight) {
+    protected void drawComponent(char[][] buffer, CompoundStyle[][] styleBuffer, int startX, int startY, int contentWidth, int contentHeight) {
         // Do nothing, override in subclasses
     }
 
@@ -136,7 +131,7 @@ public class Component {
 //        buffer[startY + height - 1][startX + width - 1] = '+';
 //    }
 
-    protected void drawBorder(char[][] buffer) {
+    protected void drawBorder(char[][] buffer, CompoundStyle[][] styleBuffer) {
         if (borderStyle == BorderStyle.NONE) {
             return;
         }
@@ -194,6 +189,10 @@ public class Component {
         buffer[endY][endX] = bottomRightCornerChar;
     }
 
+    public CompoundStyle getCompoundStyle() {
+        return CompoundStyleFactory.get(getStyle(), getForegroundColor(), getBackgroundColor());
+    }
+
     public int getActualWidth() {
         // Override in subclasses if necessary
         return width;
@@ -230,6 +229,36 @@ public class Component {
 
     public <T extends Component> T withBorder(BorderStyle borderStyle) {
         this.borderStyle = borderStyle;
+        return (T) this;
+    }
+
+    // with foreground color
+    public <T extends Component> T withForegroundColor(Color color) {
+        this.foregroundColor = color;
+        return (T) this;
+    }
+
+    // with background color
+    public <T extends Component> T withBackgroundColor(Color color) {
+        this.backgroundColor = color;
+        return (T) this;
+    }
+
+    // with style
+    public <T extends Component> T withStyle(Style style) {
+        this.style = style;
+        return (T) this;
+    }
+
+    // with vertical alignment
+    public <T extends Component> T withVerticalAlignment(VerticalAlignment verticalAlignment) {
+        this.verticalAlignment = verticalAlignment;
+        return (T) this;
+    }
+
+    // with horizontal alignment
+    public <T extends Component> T withHorizontalAlignment(HorizontalAlignment horizontalAlignment) {
+        this.horizontalAlignment = horizontalAlignment;
         return (T) this;
     }
 

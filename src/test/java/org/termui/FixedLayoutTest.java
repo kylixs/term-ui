@@ -1,53 +1,31 @@
 package org.termui;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.termui.style.Color;
+import org.termui.style.Style;
 
 public class FixedLayoutTest {
-    private char[][] mainBuffer;
-    private List<Component> components;
-
-    public FixedLayoutTest(int width, int height) {
-        mainBuffer = new char[height][width];
-        components = new ArrayList<>();
-    }
-
-    public void addComponent(Component component) {
-        components.add(component);
-    }
-
-    public void draw() {
-        for (char[] row : mainBuffer) {
-            for (int i = 0; i < row.length; i++) {
-                row[i] = ' ';
-            }
-        }
-
-        for (Component component : components) {
-            component.draw(mainBuffer);
-        }
-
-        for (char[] row : mainBuffer) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
 
     public static void main(String[] args) {
-        FixedLayoutTest characterInterface = new FixedLayoutTest(80, 24);
 
-        Label label = new Label(10, 5, "Hello World");
-        characterInterface.addComponent(label);
+        Window window = new Window(80, 24);
+        Panel rootPanel = window.getRootPanel();
 
-        Button button = new Button(30, 10, "Click Me");
-        characterInterface.addComponent(button);
+        Label label = new Label(10, 5, "Hello World")
+                .withForegroundColor(Color.BLUE)
+                .withBackgroundColor(Color.WHITE);
+        rootPanel.addComponent(label);
 
-        TextField textField = new TextField(20, 15, 20);
+        Button button = new Button(30, 10, "Click Me")
+                .withBackgroundColor(Color.RED)
+                .withStyle(Style.BOLD);
+        rootPanel.addComponent(button);
+
+        TextField textField = new TextField(20, 15, 20)
+                .withBackgroundColor(Color.WHITE)
+                .withForegroundColor(Color.BLACK);
         textField.setText("Type here");
-        characterInterface.addComponent(textField);
+        rootPanel.addComponent(textField);
 
-        characterInterface.draw();
+        window.draw();
     }
 }

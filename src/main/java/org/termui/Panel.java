@@ -1,6 +1,7 @@
 package org.termui;
 
 import org.termui.layout.LayoutManager;
+import org.termui.style.CompoundStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,18 @@ public class Panel extends Component {
     }
 
     @Override
-    public void draw(char[][] buffer) {
-        super.draw(buffer);
+    protected void drawBorder(char[][] buffer, CompoundStyle[][] styleBuffer) {
+        // draw background
+        drawBackground(buffer, styleBuffer);
+        // draw border
+        super.drawBorder(buffer, styleBuffer);
+    }
+
+    @Override
+    public void draw(char[][] buffer, CompoundStyle[][] styleBuffer) {
+        super.draw(buffer, styleBuffer);
         for (Component component : components) {
-            component.draw(buffer);
+            component.draw(buffer, styleBuffer);
         }
     }
 

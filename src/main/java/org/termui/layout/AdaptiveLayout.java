@@ -3,6 +3,7 @@ package org.termui.layout;
 import org.termui.Component;
 import org.termui.Panel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptiveLayout implements LayoutManager {
@@ -12,6 +13,21 @@ public class AdaptiveLayout implements LayoutManager {
     public AdaptiveLayout(boolean isHorizontal, List<Constraint> constraints) {
         this.isHorizontal = isHorizontal;
         this.constraints = constraints;
+    }
+
+    public AdaptiveLayout(boolean isHorizontal) {
+        this.isHorizontal = isHorizontal;
+        constraints = new ArrayList<>();
+    }
+
+    // set constraint of component by index
+    public void setConstraint(int index, ConstraintType type) {
+        if (index >= constraints.size()) {
+            for (int i = constraints.size(); i <= index; i++) {
+                constraints.add(new Constraint(0, ConstraintType.FIXED));
+            }
+        }
+        constraints.set(index, new Constraint(index, type));
     }
 
     @Override

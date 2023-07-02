@@ -9,37 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptiveLayoutTest {
-    private char[][] mainBuffer;
-    private Panel rootContainer;
-
-    public AdaptiveLayoutTest(int width, int height) {
-        mainBuffer = new char[height][width];
-        rootContainer = new Panel(0, 0, width, height);
-    }
-
-    public void setRootContainer(Panel container) {
-        rootContainer = container;
-    }
-
-    public void draw() {
-        for (char[] row : mainBuffer) {
-            for (int i = 0; i < row.length; i++) {
-                row[i] = ' ';
-            }
-        }
-
-        rootContainer.draw(mainBuffer);
-
-        for (char[] row : mainBuffer) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
 
     public static void main(String[] args) {
-        AdaptiveLayoutTest adaptiveLayoutTest = new AdaptiveLayoutTest(80, 24);
+
+        Window window = new Window(80, 24);
 
         Panel container = new Panel(10, 5, 60, 14);
         container.withBorder(BorderStyle.SINGLE_LINE);
@@ -54,10 +27,12 @@ public class AdaptiveLayoutTest {
         constraints.add(new Constraint(2, ConstraintType.FILL));
         constraints.add(new Constraint(1, ConstraintType.FIXED));
 
+        Panel rootPanel = window.getRootPanel();
+        rootPanel.withBorder(BorderStyle.SINGLE_LINE);
+        rootPanel.addComponent(container);
         container.setLayoutManager(new AdaptiveLayout(false, constraints));
-        adaptiveLayoutTest.setRootContainer(container);
         container.doLayout();
 
-        adaptiveLayoutTest.draw();
+        window.draw();
     }
 }

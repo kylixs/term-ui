@@ -1,5 +1,7 @@
 package org.termui;
 
+import org.termui.style.CompoundStyle;
+
 public class Button extends Component {
     private String label;
 
@@ -8,31 +10,17 @@ public class Button extends Component {
         this.label = label;
     }
 
-//    @Override
-//    protected char getCharAt(int x, int y) {
-//        if (y == 0 || y == 2) {
-//            if (x == 0 || x == width - 1) {
-//                return '+';
-//            } else if (x == 1 || x == width - 2) {
-//                return '-';
-//            }
-//        } else if (y == 1) {
-//            if (x == 0 || x == width - 1) {
-//                return '|';
-//            } else if (x > 1 && x < width - 2) {
-//                return label.charAt(x - 2);
-//            }
-//        }
-//        return ' ';
-//    }
-
     @Override
-    protected void drawComponent(char[][] buffer, int startX, int startY, int contentWidth, int contentHeight) {
+    protected void drawComponent(char[][] buffer, CompoundStyle[][] styleBuffer, int startX, int startY, int contentWidth, int contentHeight) {
+        // style
+        CompoundStyle style = getCompoundStyle();
+
         // Draw the button text
         int currentX = startX + (getWidth() - contentWidth) / 2;
         int currentY = startY + (getHeight() - contentHeight) / 2;
         for (char c : label.toCharArray()) {
             buffer[currentY][currentX] = c;
+            styleBuffer[currentY][currentX] = style;
             currentX++;
             if (currentX >= startX + contentWidth) {
                 break;

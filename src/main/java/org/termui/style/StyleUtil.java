@@ -16,6 +16,7 @@ public class StyleUtil {
      * 设置文本样式：\u001B[<style_code>m
      * 其中，<color_code>代表颜色代码，可以是预定义的颜色代码或RGB值；<style_code>代表样式代码，可以是预定义的样式代码。
      * </pre>
+     *
      * @param foregroundColor
      * @param backgroundColor
      * @param style
@@ -24,16 +25,16 @@ public class StyleUtil {
     public static String beginStyle(Color foregroundColor, Color backgroundColor, Style style) {
         StringBuilder sb = new StringBuilder();
         sb.append("\033["); // \u001B[
-        boolean first= true;
+        boolean first = true;
 
         // 设置前景色
-        if (foregroundColor != null) {
+        if (foregroundColor != null && foregroundColor != Color.NONE) {
             first = false;
             sb.append(foregroundColor.getCode());
         }
 
         // 设置背景色
-        if (backgroundColor != null) {
+        if (backgroundColor != null && backgroundColor != Color.NONE) {
             if (!first) {
                 sb.append(";");
             }
@@ -42,7 +43,7 @@ public class StyleUtil {
         }
 
         // 设置样式
-        if (style != null) {
+        if (style != null && style != Style.NONE) {
             if (!first) {
                 sb.append(";");
             }
@@ -56,5 +57,9 @@ public class StyleUtil {
 
     public static String resetStyle() {
         return "\033[0m";
+    }
+
+    public static String beginStyle(CompoundStyle compoundStyle) {
+        return beginStyle(compoundStyle.getForegroundColor(), compoundStyle.getBackgroundColor(), compoundStyle.getStyle());
     }
 }

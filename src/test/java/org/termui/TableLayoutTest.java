@@ -5,37 +5,10 @@ import org.termui.layout.TableLayout;
 import org.termui.layout.VerticalLayout;
 
 public class TableLayoutTest {
-    private char[][] mainBuffer;
-    private Panel rootPanel;
-
-    public TableLayoutTest(int width, int height) {
-        mainBuffer = new char[height][width];
-        rootPanel = new Panel(0, 0, width, height);
-    }
-
-    public void setRootContainer(Panel panel) {
-        rootPanel = panel;
-    }
-
-    public void draw() {
-        for (char[] row : mainBuffer) {
-            for (int i = 0; i < row.length; i++) {
-                row[i] = ' ';
-            }
-        }
-
-        rootPanel.draw(mainBuffer);
-
-        for (char[] row : mainBuffer) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
 
     public static void main(String[] args) {
-        TableLayoutTest characterInterface = new TableLayoutTest(80, 24);
+        Window window = new Window(80, 24);
+        Panel rootPanel = window.getRootPanel();
 
         Panel panel1 = new Panel(10, 5, 60, 14);
         panel1.setLayoutManager(new VerticalLayout());
@@ -55,14 +28,11 @@ public class TableLayoutTest {
         Label label4 = new Label(0, 0, "Label 4");
         panel2.addComponent(label4);
 
-        Panel rootPanel = new Panel(0, 0, 80, 24);
         rootPanel.setLayoutManager(new TableLayout(2, 1));
         rootPanel.addComponent(panel1);
         rootPanel.addComponent(panel2);
 
-        characterInterface.setRootContainer(rootPanel);
-        rootPanel.doLayout();
-
-        characterInterface.draw();
+        window.doLayout();
+        window.draw();
     }
 }

@@ -1,5 +1,7 @@
 package org.termui;
 
+import org.termui.style.CompoundStyle;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +58,8 @@ public class Table extends Component {
     }
 
     @Override
-    public void draw(char[][] buffer) {
-        super.draw(buffer);
+    public void draw(char[][] buffer, CompoundStyle[][] styleBuffer) {
+        super.draw(buffer, styleBuffer);
 
         int x = getX();
         int y = getY();

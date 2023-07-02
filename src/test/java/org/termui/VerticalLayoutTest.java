@@ -3,37 +3,10 @@ package org.termui;
 import org.termui.layout.VerticalLayout;
 
 public class VerticalLayoutTest {
-    private char[][] mainBuffer;
-    private Panel rootPanel;
-
-    public VerticalLayoutTest(int width, int height) {
-        mainBuffer = new char[height][width];
-        rootPanel = new Panel(0, 0, width, height);
-    }
-
-    public void setRootContainer(Panel panel) {
-        rootPanel = panel;
-    }
-
-    public void draw() {
-        for (char[] row : mainBuffer) {
-            for (int i = 0; i < row.length; i++) {
-                row[i] = ' ';
-            }
-        }
-
-        rootPanel.draw(mainBuffer);
-
-        for (char[] row : mainBuffer) {
-            for (char c : row) {
-                System.out.print(c);
-            }
-            System.out.println();
-        }
-    }
 
     public static void main(String[] args) {
-        VerticalLayoutTest characterInterface = new VerticalLayoutTest(80, 24);
+        Window window = new Window(80, 24);
+        Panel rootPanel = window.getRootPanel();
 
         Panel panel = new Panel(10, 5, 60, 14);
         panel.setLayoutManager(new VerticalLayout());
@@ -47,9 +20,9 @@ public class VerticalLayoutTest {
         Label label3 = new Label(0, 0, "Label 3");
         panel.addComponent(label3);
 
-        characterInterface.setRootContainer(panel);
-        panel.doLayout();
+        rootPanel.addComponent(panel);
 
-        characterInterface.draw();
+        window.doLayout();
+        window.draw();
     }
 }

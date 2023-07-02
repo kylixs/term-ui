@@ -1,5 +1,7 @@
 package org.termui;
 
+import org.termui.style.CompoundStyle;
+
 class TextField extends Component {
     private StringBuilder text;
 
@@ -25,12 +27,16 @@ class TextField extends Component {
     }
 
     @Override
-    protected void drawComponent(char[][] buffer, int startX, int startY, int contentWidth, int contentHeight) {
+    protected void drawComponent(char[][] buffer, CompoundStyle[][] styleBuffer, int startX, int startY, int contentWidth, int contentHeight) {
+        // style
+        CompoundStyle style = getCompoundStyle();
+
         // Draw the text field text
         int currentX = startX + 1;
         int currentY = startY + 1;
         for (char c : text.toString().toCharArray()) {
             buffer[currentY][currentX] = c;
+            styleBuffer[currentY][currentX] = style;
             currentX++;
             if (currentX >= startX + contentWidth - 1) {
                 currentX = startX + 1;
