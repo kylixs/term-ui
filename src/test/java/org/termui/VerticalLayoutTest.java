@@ -1,14 +1,12 @@
 package org.termui;
 
-import org.termui.layout.HorizontalLayout;
-import org.termui.layout.TableLayout;
 import org.termui.layout.VerticalLayout;
 
-public class CharacterInterface5 {
+public class VerticalLayoutTest {
     private char[][] mainBuffer;
     private Panel rootPanel;
 
-    public CharacterInterface5(int width, int height) {
+    public VerticalLayoutTest(int width, int height) {
         mainBuffer = new char[height][width];
         rootPanel = new Panel(0, 0, width, height);
     }
@@ -35,33 +33,22 @@ public class CharacterInterface5 {
     }
 
     public static void main(String[] args) {
-        CharacterInterface5 characterInterface = new CharacterInterface5(80, 24);
+        VerticalLayoutTest characterInterface = new VerticalLayoutTest(80, 24);
 
-        Panel panel1 = new Panel(10, 5, 60, 14);
-        panel1.setLayoutManager(new VerticalLayout());
+        Panel panel = new Panel(10, 5, 60, 14);
+        panel.setLayoutManager(new VerticalLayout());
 
         Label label1 = new Label(0, 0, "Label 1");
-        panel1.addComponent(label1);
+        panel.addComponent(label1);
 
         Label label2 = new Label(0, 0, "Label 2");
-        panel1.addComponent(label2);
-
-        Panel panel2 = new Panel(0, 0, 60, 4);
-        panel2.setLayoutManager(new HorizontalLayout());
+        panel.addComponent(label2);
 
         Label label3 = new Label(0, 0, "Label 3");
-        panel2.addComponent(label3);
+        panel.addComponent(label3);
 
-        Label label4 = new Label(0, 0, "Label 4");
-        panel2.addComponent(label4);
-
-        Panel rootPanel = new Panel(0, 0, 80, 24);
-        rootPanel.setLayoutManager(new TableLayout(2, 1));
-        rootPanel.addComponent(panel1);
-        rootPanel.addComponent(panel2);
-
-        characterInterface.setRootContainer(rootPanel);
-        rootPanel.doLayout();
+        characterInterface.setRootContainer(panel);
+        panel.doLayout();
 
         characterInterface.draw();
     }

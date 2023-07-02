@@ -3,11 +3,11 @@ package org.termui;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterInterfaceTest1 {
+public class FixedLayoutTest {
     private char[][] mainBuffer;
     private List<Component> components;
 
-    public CharacterInterfaceTest1(int width, int height) {
+    public FixedLayoutTest(int width, int height) {
         mainBuffer = new char[height][width];
         components = new ArrayList<>();
     }
@@ -36,7 +36,7 @@ public class CharacterInterfaceTest1 {
     }
 
     public static void main(String[] args) {
-        CharacterInterfaceTest1 characterInterface = new CharacterInterfaceTest1(80, 24);
+        FixedLayoutTest characterInterface = new FixedLayoutTest(80, 24);
 
         Label label = new Label(10, 5, "Hello World");
         characterInterface.addComponent(label);

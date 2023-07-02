@@ -4,11 +4,11 @@ import org.termui.layout.HorizontalLayout;
 import org.termui.layout.TableLayout;
 import org.termui.layout.VerticalLayout;
 
-public class CharacterInterface4 {
+public class TableLayoutTest {
     private char[][] mainBuffer;
     private Panel rootPanel;
 
-    public CharacterInterface4(int width, int height) {
+    public TableLayoutTest(int width, int height) {
         mainBuffer = new char[height][width];
         rootPanel = new Panel(0, 0, width, height);
     }
@@ -35,7 +35,7 @@ public class CharacterInterface4 {
     }
 
     public static void main(String[] args) {
-        CharacterInterface4 characterInterface = new CharacterInterface4(80, 24);
+        TableLayoutTest characterInterface = new TableLayoutTest(80, 24);
 
         Panel panel1 = new Panel(10, 5, 60, 14);
         panel1.setLayoutManager(new VerticalLayout());
