@@ -35,11 +35,11 @@ public class Label extends Component {
         int currentX = startX;
         int currentY = startY;
         // style
-        CompoundStyle style = getCompoundStyle();
+        //CompoundStyle style = getCompoundStyle();
 
         for (char c : text.toCharArray()) {
             buffer[currentY][currentX] = c;
-            styleBuffer[currentY][currentX] = style;
+            //styleBuffer[currentY][currentX] = style;
             currentX++;
             if (currentX >= startX + contentWidth) {
                 currentX = startX;

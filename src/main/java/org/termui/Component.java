@@ -21,6 +21,7 @@ public class Component {
     protected Color backgroundColor = Color.NONE;
     protected BorderStyle borderStyle = BorderStyle.NONE;
     protected Color borderColor = Color.WHITE;
+    protected Component parent;
 
     public Component(int x, int y, int width, int height) {
         this.x = x;
@@ -28,6 +29,11 @@ public class Component {
         this.width = width;
         this.height = height;
         this.visible = true;
+    }
+
+    // set parent
+    protected void setParent(Component parent) {
+        this.parent = parent;
     }
 
     public void setAlignment(HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment) {
@@ -95,11 +101,14 @@ public class Component {
                 break;
         }
 
+        // Draw the background
+        drawBackground(buffer, styleBuffer);
+
+        // Draw the border
         if (borderStyle != BorderStyle.NONE) {
             // Adjust the start position
             startX++;
 //            startY++;
-            // Draw the border
             drawBorder(buffer, styleBuffer);
         }
 
@@ -190,7 +199,24 @@ public class Component {
     }
 
     public CompoundStyle getCompoundStyle() {
-        return CompoundStyleFactory.get(getStyle(), getForegroundColor(), getBackgroundColor());
+        Style _style = getStyle();
+        Color _foregroundColor = getForegroundColor();
+        Color _backgroundColor = getBackgroundColor();
+        if (parent != null) {
+            // if style is none use parent style
+            if (_style == Style.NONE) {
+                _style = parent.getCompoundStyle().getStyle();
+            }
+            // if foreground color is none use parent foreground color
+            if (_foregroundColor == Color.NONE) {
+                _foregroundColor = parent.getCompoundStyle().getForegroundColor();
+            }
+            // if background color is none use parent background color
+            if (_backgroundColor == Color.NONE) {
+                _backgroundColor = parent.getCompoundStyle().getBackgroundColor();
+            }
+        }
+        return CompoundStyleFactory.get(_style, _foregroundColor, _backgroundColor);
     }
 
     public int getActualWidth() {

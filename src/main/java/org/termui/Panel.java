@@ -21,14 +21,7 @@ public class Panel extends Component {
 
     public void addComponent(Component component) {
         components.add(component);
-    }
-
-    @Override
-    protected void drawBorder(char[][] buffer, CompoundStyle[][] styleBuffer) {
-        // draw background
-        drawBackground(buffer, styleBuffer);
-        // draw border
-        super.drawBorder(buffer, styleBuffer);
+        component.setParent(this);
     }
 
     @Override

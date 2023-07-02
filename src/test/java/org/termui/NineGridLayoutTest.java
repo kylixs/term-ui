@@ -16,6 +16,8 @@ public class NineGridLayoutTest {
         Window window = new Window(80, 24);
 
         Panel panel = new Panel(10, 5, 60, 13);
+        panel.withBackgroundColor(Color.WHITE)
+                .withBorder(BorderStyle.SINGLE_LINE);
         panel.setLayoutManager(new NineGridLayoutManager(panel));
 
         Label leftTopLabel = new Label("LEFT_TOP")
@@ -69,6 +71,7 @@ public class NineGridLayoutTest {
         layoutManager.addComponent(rightBottomLabel, Position.RIGHT_BOTTOM);
 
         Panel rootPanel = window.getRootPanel();
+        rootPanel.withBackgroundColor(Color.BLUE);
         rootPanel.setLayoutManager(new VerticalLayout());
         rootPanel.addComponent(panel);
         rootPanel.doLayout();

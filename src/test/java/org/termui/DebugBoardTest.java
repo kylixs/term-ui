@@ -13,6 +13,7 @@ public class DebugBoardTest {
     public static void main(String[] args) {
         Window window = new Window(80, 24);
         Panel rootPanel = window.getRootPanel();
+        rootPanel.withBackgroundColor(Color.BLUE);
 
         NineGridLayoutManager layoutManager = new NineGridLayoutManager(rootPanel);
         rootPanel.setLayoutManager(layoutManager);
