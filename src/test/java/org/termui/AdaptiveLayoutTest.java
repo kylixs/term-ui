@@ -43,14 +43,16 @@ public class AdaptiveLayoutTest {
 
         Panel container = new Panel(10, 5, 60, 14);
         container.withBorder(BorderStyle.SINGLE_LINE);
-        container.addComponent(new Label(0, 0, "Label 1").withBorder(BorderStyle.SINGLE_LINE));
+        container.addComponent(new Label(0, 0, "Top").withBorder(BorderStyle.SINGLE_LINE));
         container.addComponent(new Label(0, 0, "Label 2").withBorder(BorderStyle.SINGLE_LINE));
         container.addComponent(new Label(0, 0, "Label 3").withBorder(BorderStyle.SINGLE_LINE));
+        container.addComponent(new Label(0, 0, "Bottom").withBorder(BorderStyle.SINGLE_LINE));
 
         List<Constraint> constraints = new ArrayList<>();
         constraints.add(new Constraint(1, ConstraintType.FIXED));
-        constraints.add(new Constraint(1, ConstraintType.FILL));
-        constraints.add(new Constraint(1, ConstraintType.FILL));
+        constraints.add(new Constraint(3, ConstraintType.FILL));
+        constraints.add(new Constraint(2, ConstraintType.FILL));
+        constraints.add(new Constraint(1, ConstraintType.FIXED));
 
         container.setLayoutManager(new AdaptiveLayout(false, constraints));
         adaptiveLayoutTest.setRootContainer(container);

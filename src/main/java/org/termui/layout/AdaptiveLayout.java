@@ -25,34 +25,24 @@ public class AdaptiveLayout implements LayoutManager {
         int totalFixed = 0;
         int totalFill = 0;
 
+        int numFillComponents = 0;
         for (Constraint constraint : constraints) {
             if (constraint.getType() == ConstraintType.FIXED) {
                 totalFixed += constraint.getValue();
             } else if (constraint.getType() == ConstraintType.FILL) {
                 totalFill += constraint.getValue();
+                numFillComponents++;
             }
         }
 
         int fixedSize = isHorizontal ? containerWidth - totalFill : containerHeight - totalFill;
         int fillSize = isHorizontal ? containerWidth - totalFixed : containerHeight - totalFixed;
-        int remainingSize = isHorizontal ? containerWidth : containerHeight;
+        int remainingSize = fillSize;
 
         int currentX = containerX;
         int currentY = containerY;
+        int currentFillComponent = 0;
 
-        // set fixed components
-        for (int i = 0; i < components.size(); i++) {
-            Component component = components.get(i);
-            Constraint constraint = constraints.get(i);
-            if (isHorizontal) {
-                int componentWidth;
-                if (constraint.getType() == ConstraintType.FIXED) {
-                    componentWidth = constraint.getValue();
-                }
-            }
-        }
-
-        // set filled components
         for (int i = 0; i < components.size(); i++) {
             Component component = components.get(i);
             Constraint constraint = constraints.get(i);
@@ -63,38 +53,34 @@ public class AdaptiveLayout implements LayoutManager {
                     componentWidth = constraint.getValue();
                 } else {
                     componentWidth = (int) ((double) constraint.getValue() / totalFill * fillSize);
+                    currentFillComponent++;
+                    remainingSize -= componentWidth;
+                    // give remaining size to last one
+                    if (currentFillComponent == numFillComponents) {
+                        componentWidth += remainingSize;
+                        remainingSize = 0;
+                    }
                 }
 
                 component.setBounds(currentX, currentY, componentWidth, containerHeight);
                 currentX += componentWidth;
-                remainingSize -= componentWidth;
             } else {
                 int componentHeight;
                 if (constraint.getType() == ConstraintType.FIXED) {
                     componentHeight = constraint.getValue();
                 } else {
                     componentHeight = (int) ((double) constraint.getValue() / totalFill * fillSize);
+                    currentFillComponent++;
+                    remainingSize -= componentHeight;
+                    // give remaining size to last one
+                    if (currentFillComponent == numFillComponents) {
+                        componentHeight += remainingSize;
+                        remainingSize = 0;
+                    }
                 }
 
                 component.setBounds(currentX, currentY, containerWidth, componentHeight);
                 currentY += componentHeight;
-                remainingSize -= componentHeight;
-            }
-        }
-
-        // give remaining size to last one
-        if (remainingSize > 0) {
-            for (int i = components.size() - 1; i >= 0; i--) {
-                Component component = components.get(i);
-                Constraint constraint = constraints.get(i);
-                if (constraint.getType() == ConstraintType.FILL) {
-                    if (isHorizontal) {
-                        component.setSize(component.getWidth() + remainingSize, component.getHeight());
-                    } else {
-                        component.setSize(component.getWidth(), component.getHeight() + remainingSize);
-                    }
-                    break;
-                }
             }
         }
     }
